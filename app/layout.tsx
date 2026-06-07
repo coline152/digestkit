@@ -20,6 +20,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-512.png" />
+        <meta name="theme-color" content="#1B3A4B" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="DigestKit" />
+      </head>
       <body className={`${raleway.variable} min-h-screen bg-white text-slate-900 antialiased`}>
         {children}
       </body>
