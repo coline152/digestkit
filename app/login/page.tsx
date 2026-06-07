@@ -60,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      className="h-screen flex flex-col items-center justify-center relative overflow-hidden"
       style={{ backgroundColor: "#FAF6F1" }}
     >
       {/* Motif en haut */}
@@ -70,6 +70,7 @@ export default function LoginPage() {
           backgroundImage: "url('/motif-login-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
+          backgroundRepeat: "no-repeat",
           opacity: 0.85,
         }}
       />
@@ -81,6 +82,7 @@ export default function LoginPage() {
           backgroundImage: "url('/motif-login-bas.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
+          backgroundRepeat: "no-repeat",
           opacity: 0.85,
         }}
       />

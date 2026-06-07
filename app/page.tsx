@@ -8,7 +8,7 @@ function AppHomePageInner() {
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      className="h-screen flex flex-col items-center justify-center relative overflow-hidden"
       style={{ backgroundColor: "#FAF6F1" }}
     >
       {/* Motif en haut */}
@@ -18,6 +18,7 @@ function AppHomePageInner() {
           backgroundImage: "url('/motif-accueil-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
+          backgroundRepeat: "no-repeat",
           opacity: 0.85,
         }}
       />
@@ -29,6 +30,7 @@ function AppHomePageInner() {
           backgroundImage: "url('/motif-accueil-bas.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
+          backgroundRepeat: "no-repeat",
           opacity: 0.85,
         }}
       />
