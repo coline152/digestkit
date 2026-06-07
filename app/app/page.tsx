@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
@@ -127,7 +128,7 @@ function findEntryByIso(
   return entries.find((entry) => entry.entry_date === iso);
 }
 
-export default function AppHomePage() {
+function AppHomePageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -1225,4 +1226,14 @@ function CardRow({
   }
 
   return <div className={commonClass}>{content}</div>;
+}
+return <div className={commonClass}>{content}</div>;
+}
+
+export default function AppHomePage() {
+  return (
+    <Suspense>
+      <AppHomePageInner />
+    </Suspense>
+  );
 }
