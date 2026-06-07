@@ -12,28 +12,18 @@ function AppHomePageInner() {
       style={{ backgroundColor: "#FAF6F1" }}
     >
       {/* Motif en haut */}
-      <div
-        className="absolute top-0 left-0 w-full h-48"
-        style={{
-          backgroundImage: "url('/motif-accueil-haut.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "top center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.85,
-        }}
-      />
+      <img
+  src="/motif-accueil-haut.png"
+  className="absolute top-0 left-0 w-full"
+  style={{ opacity: 0.85 }}
+/>
 
       {/* Motif en bas */}
-      <div
-        className="absolute bottom-0 left-0 w-full h-48"
-        style={{
-          backgroundImage: "url('/motif-accueil-bas.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "top center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.85,
-        }}
-      />
+     <img
+  src="/motif-accueil-bas.png"
+  className="absolute bottom-0 left-0 w-full"
+  style={{ opacity: 0.85 }}
+/>
 
       {/* Contenu */}
       <div className="relative z-10 w-full max-w-xs px-6 flex flex-col gap-4">
