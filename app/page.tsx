@@ -18,7 +18,6 @@ function AppHomePageInner() {
           backgroundImage: "url('/motif-accueil-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
-          transform: "scaleY(-1) scaleX(-1)",
           opacity: 0.85,
         }}
       />

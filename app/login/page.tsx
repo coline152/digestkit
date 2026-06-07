@@ -70,7 +70,6 @@ export default function LoginPage() {
           backgroundImage: "url('/motif-login-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
-          transform: "scaleY(-1) scaleX(-1)",
           opacity: 0.85,
         }}
       />
