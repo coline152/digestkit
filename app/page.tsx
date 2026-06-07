@@ -1,8 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 
-export default function HomePage() {
+function AppHomePageInner() {
   const router = useRouter();
 
   return (
@@ -50,5 +51,13 @@ export default function HomePage() {
         </button>
       </div>
     </main>
+  );
+}
+
+export default function AppHomePage() {
+  return (
+    <Suspense>
+      <AppHomePageInner />
+    </Suspense>
   );
 }
