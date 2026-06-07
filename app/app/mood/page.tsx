@@ -80,7 +80,9 @@ function toISODate(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-export default function MoodPage() {
+import { Suspense } from "react";
+
+function MoodPageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -467,5 +469,12 @@ export default function MoodPage() {
         </div>
       )}
     </main>
+  );
+}
+export default function MoodPage() {
+  return (
+    <Suspense>
+      <MoodPageInner />
+    </Suspense>
   );
 }
