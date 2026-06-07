@@ -805,7 +805,7 @@ const todayIndexInWeek = useMemo(() => {
           <CardRow
            title="Douleurs"
            color="#E0949F"
-           value={painText || "appuyer pour renseigner vos douleurs"}
+           value={painText || "-"}
            subtitle={[painExtraText, painZonesText].filter(Boolean).join(" · ")}
            onClick={() => router.push(`/app/pain?date=${toISODate(selectedDate)}`)}
           />
@@ -813,20 +813,20 @@ const todayIndexInWeek = useMemo(() => {
           <CardRow
             title="Moral"
             color="#E9D29F"
-            value={moodText ?? "appuyer pour renseigner votre moral"}
+            value={moodText ?? "-"}
             subtitle={moodTagsText}
             onClick={() => router.push(`/app/mood?date=${toISODate(selectedDate)}`)}
           />
           <div className="h-px bg-[#13344A]/15" />
           <CardRow title="Symptômes"
           color="#8FA7B5"
-          subtitle={symptomsText || "appuyer pour renseigner vos symptômes"}
+          subtitle={symptomsText || "-"}
           onClick={() => router.push(`/app/symptoms?date=${toISODate(selectedDate)}`)}
           />
           <div className="h-px bg-[#13344A]/15" />
           <CardRow title="Médications" 
           color="#8FA7B5" 
-          value={medicationLines.length > 0 ? medicationLines[0] : "appuyer pour renseigner vos prises de médicaments"}
+          value={medicationLines.length > 0 ? medicationLines[0] : "-"}
           details={medicationLines.length > 1 ? medicationLines.slice(1) : []}
           onClick={() => router.push(`/app/medications?date=${toISODate(selectedDate)}`)}/>
 
