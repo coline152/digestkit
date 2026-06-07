@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+
+  /* Couleur principale DigestKit */
+
+  --rouge: #E5576B;
+  --jaune: #F6CA6B;
+  --aubergine: #52272D;
+  --rouge-clair: #E0949F;
+  --jaune-clair: #E9D29F;
+  --bleu: #8D9CA6;
+  --bleu-clair: #C8CDD2;
+  --bleu-fonce: #12374E;
+  --blanc: #FFFFFF;
+
+
+  /* Couleur hover */
+  --boutton-etat-classique: #e8decf;
+  --boutton-etat-hoover: #483c32;
+
+  /* Couleurs fonds */
+  --fond-beige-clair: #FBF6F0;
+  --fond-beige-fonce: #F9F1E8;
+
+}
+
+@theme inline {
+  --color-rouge: var(--rouge);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-pain: var(--pain);
+  --color-pain-foreground: var(--pain-foreground);
+
+  --color-mood: var(--mood);
+  --color-mood-foreground: var(--mood-foreground);
+
+  --color-symptom: var(--symptom);
+  --color-symptom-foreground: var(--symptom-foreground);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --font-sans: var(--font-raleway);
+
+  --text-sm: 0.975rem;
+  --text-base: 1.4rem;
+  --text-lg: 1.125rem;
+
+  --text-xl: 1.4rem;
+  --text-2xl: 1.6rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-raleway), sans-serif;
+}
