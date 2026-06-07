@@ -1227,8 +1227,7 @@ function CardRow({
 
   return <div className={commonClass}>{content}</div>;
 }
-return <div className={commonClass}>{content}</div>;
-}
+
 
 export default function AppHomePage() {
   return (
