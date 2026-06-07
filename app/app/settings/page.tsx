@@ -1,10 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function SettingsPage() {
+function SettingsPageInner() {
   const router = useRouter();
 
   const [newEmail, setNewEmail] = useState("");
@@ -145,5 +147,12 @@ export default function SettingsPage() {
 
       </section>
     </main>
+  );
+}
+export default function SettingsPage() {
+  return (
+    <Suspense>
+      <SettingsPageInner />
+    </Suspense>
   );
 }

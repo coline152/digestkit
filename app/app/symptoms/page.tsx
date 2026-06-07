@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -40,7 +42,7 @@ function readMetaSymptomNote(meta: any): string {
   return typeof v === "string" ? v : "";
 }
 
-export default function SymptomsPage() {
+function SymptomsPageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -356,5 +358,12 @@ export default function SymptomsPage() {
         </div>
       )}
     </main>
+  );
+}
+export default function SymptomsPage() {
+  return (
+    <Suspense>
+      <SymptomsPageInner />
+    </Suspense>
   );
 }

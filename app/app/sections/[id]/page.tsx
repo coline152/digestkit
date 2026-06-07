@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -24,7 +26,7 @@ function readMeta(obj: any): Record<string, any> {
   return {};
 }
 
-export default function CustomSectionPage() {
+function SectionsPageInner() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const search = useSearchParams();
@@ -309,5 +311,12 @@ export default function CustomSectionPage() {
         </div>
       )}
     </main>
+  );
+}
+export default function SectionsPage() {
+  return (
+    <Suspense>
+      <SectionsPageInner />
+    </Suspense>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -84,7 +86,7 @@ function readMedicationsFromMeta(meta: unknown): MedicationItem[] {
   return cleaned.length > 0 ? cleaned : [createEmptyMedication()];
 }
 
-export default function MedicationsPage() {
+function MedicationsPageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -407,5 +409,12 @@ export default function MedicationsPage() {
         </div>
       </section>
     </main>
+  );
+}
+export default function MedicationsPage() {
+  return (
+    <Suspense>
+      <MedicationsPageInner />
+    </Suspense>
   );
 }

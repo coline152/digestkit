@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -60,7 +62,7 @@ function readPainSpots(meta: any): PainSpot[] {
     .filter((x: any) => x.zone != null && x.zone >= 1 && x.zone <= 6);
 }
 
-export default function PainPage() {
+function PainPageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -488,5 +490,12 @@ function Star({ filled }: { filled: boolean }) {
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+export default function PainPage() {
+  return (
+    <Suspense>
+      <PainPageInner />
+    </Suspense>
   );
 }

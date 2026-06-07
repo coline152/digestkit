@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +21,7 @@ function toISODate(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-export default function NewSectionPage() {
+function NewPageInner() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -136,5 +138,12 @@ export default function NewSectionPage() {
       </section>
       
     </main>
+  );
+}
+export default function NewPage() {
+  return (
+    <Suspense>
+      <NewPageInner />
+    </Suspense>
   );
 }
