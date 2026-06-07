@@ -15,7 +15,7 @@ function AppHomePageInner() {
       <div
         className="absolute top-0 left-0 w-full h-48"
         style={{
-          backgroundImage: "url('/motif.png')",
+          backgroundImage: "url('/motif-accueil-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
           transform: "scaleY(-1) scaleX(-1)",
@@ -27,7 +27,7 @@ function AppHomePageInner() {
       <div
         className="absolute bottom-0 left-0 w-full h-48"
         style={{
-          backgroundImage: "url('/motif.png')",
+          backgroundImage: "url('/motif-accueil-bas.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
           opacity: 0.85,

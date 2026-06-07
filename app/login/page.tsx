@@ -67,7 +67,7 @@ export default function LoginPage() {
       <div
         className="absolute top-0 left-0 w-full h-48 bg-no-repeat"
         style={{
-          backgroundImage: "url('/motif.png')",
+          backgroundImage: "url('/motif-login-haut.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
           transform: "scaleY(-1) scaleX(-1)",
@@ -79,7 +79,7 @@ export default function LoginPage() {
       <div
         className="absolute bottom-0 left-0 w-full h-48 bg-no-repeat"
         style={{
-          backgroundImage: "url('/motif.png')",
+          backgroundImage: "url('/motif-login-bas.png')",
           backgroundSize: "cover",
           backgroundPosition: "top center",
           opacity: 0.85,
