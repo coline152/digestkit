@@ -163,6 +163,15 @@ function AppHomePageInner() {
   const [newSectionTitle, setNewSectionTitle] = useState("");
 
 const [touchStartX, setTouchStartX] = useState<number | null>(null);
+const [swipeOffset, setSwipeOffset] = useState(0);
+const [isSwiping, setIsSwiping] = useState(false);
+const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
+const [isAnimating, setIsAnimating] = useState(false);
+const [displayDate, setDisplayDate] = useState<Date>(() => {
+  const t = new Date();
+  t.setHours(0, 0, 0, 0);
+  return t;
+});
 
   const [weekEntries, setWeekEntries] = useState<
     { entry_date: string; pain_level: number | null; mood_level: number | null; meta?: any; }[]
@@ -546,16 +555,37 @@ const todayIndexInWeek = useMemo(() => {
 
   return (
     <main
-onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
+onTouchStart={(e) => {
+  if (isAnimating) return;
+  setTouchStartX(e.touches[0].clientX);
+  setIsSwiping(true);
+  setSwipeOffset(0);
+}}
+onTouchMove={(e) => {
+  if (touchStartX === null || isAnimating) return;
+  const diff = e.touches[0].clientX - touchStartX;
+  setSwipeOffset(diff);
+}}
 onTouchEnd={(e) => {
-  if (touchStartX === null) return;
+  if (touchStartX === null || isAnimating) return;
   const diff = touchStartX - e.changedTouches[0].clientX;
+  setIsSwiping(false);
+  setSwipeOffset(0);
+  setTouchStartX(null);
   if (Math.abs(diff) < 50) return;
+  const direction = diff > 0 ? "left" : "right";
   const newDate = new Date(selectedDate);
   newDate.setDate(selectedDate.getDate() + (diff > 0 ? 1 : -1));
   newDate.setHours(0, 0, 0, 0);
-  if (newDate <= today) setSelectedDate(newDate);
-  setTouchStartX(null);
+  if (newDate > today) return;
+  setSlideDirection(direction);
+  setIsAnimating(true);
+  setTimeout(() => {
+    setSelectedDate(newDate);
+    setDisplayDate(newDate);
+    setSlideDirection(null);
+    setIsAnimating(false);
+  }, 300);
 }}
 >
       {/* Header */}
@@ -799,63 +829,77 @@ onTouchEnd={(e) => {
       <div className="h-px bg-[#13344A]/25" />
 
       {/* Cards stack */}
-
 {/* Cards stack */}
-<section className="px-5 py-6 pb-13">
-  <div className="rounded-2xl border border-[#13344A]/20 bg-[#F6EFE6] shadow-sm overflow-hidden">
+<section className="px-5 py-6 pb-13 overflow-hidden relative">
+  <div
+    className="rounded-2xl border border-[#13344A]/20 bg-[#F6EFE6] shadow-sm overflow-hidden"
+    style={{
+      transform: isSwiping
+        ? `translateX(${swipeOffset * 0.4}px)`
+        : slideDirection === "left"
+        ? "translateX(-100%)"
+        : slideDirection === "right"
+        ? "translateX(100%)"
+        : "translateX(0)",
+      transition: isSwiping ? "none" : "transform 0.3s ease, opacity 0.3s ease",
+      opacity: isSwiping
+        ? 1 - Math.abs(swipeOffset) / 400
+        : isAnimating ? 0 : 1,
+    }}
+  >
   
           <CardRow
-            title="Douleurs"
-            color="#E0949F"
-            value={painText || "appuyer pour renseigner la carte"}
-            subtitle={[painExtraText, painZonesText].filter(Boolean).join(" · ")}
-            onClick={() => router.push(`/app/pain?date=${toISODate(selectedDate)}`)}
+           title="Douleurs"
+           color="#E0949F"
+           value={painText || "-"}
+           subtitle={[painExtraText, painZonesText].filter(Boolean).join(" · ")}
+           onClick={() => router.push(`/app/pain?date=${toISODate(selectedDate)}`)}
           />
           <div className="h-px bg-[#13344A]/15" />
           <CardRow
             title="Moral"
             color="#E9D29F"
-            value={moodText ?? "appuyer pour renseigner la carte"}
+            value={moodText ?? "-"}
             subtitle={moodTagsText}
             onClick={() => router.push(`/app/mood?date=${toISODate(selectedDate)}`)}
           />
           <div className="h-px bg-[#13344A]/15" />
-          <CardRow
-            title="Symptômes"
-            color="#8FA7B5"
-            subtitle={symptomsText || "appuyer pour renseigner la carte"}
-            onClick={() => router.push(`/app/symptoms?date=${toISODate(selectedDate)}`)}
+          <CardRow title="Symptômes"
+          color="#8FA7B5"
+          subtitle={symptomsText || "-"}
+          onClick={() => router.push(`/app/symptoms?date=${toISODate(selectedDate)}`)}
           />
           <div className="h-px bg-[#13344A]/15" />
-          <CardRow
-            title="Médications"
-            color="#8FA7B5"
-            value={medicationLines.length > 0 ? medicationLines[0] : "appuyer pour renseigner la carte"}
-            details={medicationLines.length > 1 ? medicationLines.slice(1) : []}
-            onClick={() => router.push(`/app/medications?date=${toISODate(selectedDate)}`)}
-          />
+          <CardRow title="Médications" 
+          color="#8FA7B5" 
+          value={medicationLines.length > 0 ? medicationLines[0] : "-"}
+          details={medicationLines.length > 1 ? medicationLines.slice(1) : []}
+          onClick={() => router.push(`/app/medications?date=${toISODate(selectedDate)}`)}/>
+
           {customSections.length > 0 && (
-            <>
-              <div className="h-px bg-[#13344A]/15" />
-              {customSections.map((s, idx) => {
-                const note = customNotesMap[s.id] ?? "";
-                const subtitle = note.trim() ? note.trim() : "appuyer pour renseigner la carte";
-                return (
-                  <div key={s.id}>
-                    <CardRow
-                      title={s.label}
-                      color="#F6CA6B"
-                      value={subtitle}
-                      onClick={() => router.push(`/app/sections/${s.id}?date=${toISODate(selectedDate)}`)}
-                    />
-                    {idx !== customSections.length - 1 && <div className="h-px bg-[#13344A]/15" />}
-                  </div>
-                );
-              })}
-            </>
-          )}
-        
-      
+  <>
+    <div className="h-px bg-[#13344A]/15" />
+
+    {customSections.map((s, idx) => {
+      const note = customNotesMap[s.id] ?? "";
+      const subtitle = note.trim() ? note.trim() : "—";
+
+      return (
+        <div key={s.id}>
+          <CardRow
+            title={s.label}
+            color="#F6CA6B"
+            value={subtitle}
+            onClick={() => router.push(`/app/sections/${s.id}?date=${toISODate(selectedDate)}`)}
+          />
+
+          {/* séparateur sauf après la dernière */}
+          {idx !== customSections.length - 1 && <div className="h-px bg-[#13344A]/15" />}
+        </div>
+      );
+    })}
+  </>
+)}
         </div>
       </section>
 
@@ -1171,6 +1215,7 @@ onTouchEnd={(e) => {
     </main>
   );
 }
+
 
 
 function CardRow({
