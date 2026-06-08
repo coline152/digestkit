@@ -163,6 +163,8 @@ function AppHomePageInner() {
   const [newSectionTitle, setNewSectionTitle] = useState("");
 
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+const [swipeOffset, setSwipeOffset] = useState(0);
+const [isSwiping, setIsSwiping] = useState(false);
 
   const [weekEntries, setWeekEntries] = useState<
     { entry_date: string; pain_level: number | null; mood_level: number | null; meta?: any; }[]
@@ -546,18 +548,31 @@ const todayIndexInWeek = useMemo(() => {
 
   return (
     <main
-  className="min-h-screen bg-[#F6EFE6] text-[#13344A]"
-  onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
-  onTouchEnd={(e) => {
-    if (touchStartX === null) return;
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) < 50) return; // swipe trop court, on ignore
-    const newDate = new Date(selectedDate);
-    newDate.setDate(selectedDate.getDate() + (diff > 0 ? 1 : -1));
-    newDate.setHours(0, 0, 0, 0);
-    if (newDate <= today) setSelectedDate(newDate); // on n'autorise pas le futur
+ onTouchStart={(e) => {
+  setTouchStartX(e.touches[0].clientX);
+  setIsSwiping(true);
+  setSwipeOffset(0);
+}}
+onTouchMove={(e) => {
+  if (touchStartX === null) return;
+  const diff = e.touches[0].clientX - touchStartX;
+  setSwipeOffset(diff);
+}}
+onTouchEnd={(e) => {
+  if (touchStartX === null) return;
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  setIsSwiping(false);
+  setSwipeOffset(0);
+  if (Math.abs(diff) < 50) {
     setTouchStartX(null);
-  }}
+    return;
+  }
+  const newDate = new Date(selectedDate);
+  newDate.setDate(selectedDate.getDate() + (diff > 0 ? 1 : -1));
+  newDate.setHours(0, 0, 0, 0);
+  if (newDate <= today) setSelectedDate(newDate);
+  setTouchStartX(null);
+}}
 >
       {/* Header */}
       <header className="px-6 pt-6 pb-5">
@@ -800,8 +815,16 @@ const todayIndexInWeek = useMemo(() => {
       <div className="h-px bg-[#13344A]/25" />
 
       {/* Cards stack */}
-      <section className="px-5 py-6 pb-13">
-        <div className="rounded-2xl border border-[#13344A]/20 bg-[#F6EFE6] shadow-sm overflow-hidden">
+     {/* Cards stack */}
+<section className="px-5 py-6 pb-13 overflow-hidden">
+  <div
+    className="rounded-2xl border border-[#13344A]/20 bg-[#F6EFE6] shadow-sm overflow-hidden"
+    style={{
+      transform: isSwiping ? `translateX(${swipeOffset * 0.3}px)` : "translateX(0)",
+      transition: isSwiping ? "none" : "transform 0.3s ease",
+      opacity: isSwiping ? 1 - Math.abs(swipeOffset) / 600 : 1,
+    }}
+  >
           <CardRow
            title="Douleurs"
            color="#E0949F"

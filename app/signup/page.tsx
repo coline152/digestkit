@@ -47,7 +47,7 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="fixed inset-0 flex flex-col items-center justify-center relative overflow-hidden" style={{ backgroundColor: "#FAF6F1" }}>
+    <main className="h-screen flex flex-col items-center justify-center relative overflow-hidden" style={{ backgroundColor: "#FAF6F1" }}>
       <img src="/motif-login-haut.png" className="absolute top-0 left-0 w-full" style={{ opacity: 0.85 }} />
       <img src="/motif-login-bas.png" className="absolute bottom-0 left-0 w-full" style={{ opacity: 0.85 }} />
 
