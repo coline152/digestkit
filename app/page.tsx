@@ -8,7 +8,7 @@ function AppHomePageInner() {
 
   return (
     <main
-      className="h-screen flex flex-col items-center justify-center relative overflow-hidden"
+      className="fixed inset-0 flex flex-col items-center justify-center relative overflow-hidden"
       style={{ backgroundColor: "#FAF6F1" }}
     >
       {/* Motif en haut */}
