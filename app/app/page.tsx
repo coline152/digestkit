@@ -162,9 +162,16 @@ function AppHomePageInner() {
   const [showNewSectionModal, setShowNewSectionModal] = useState(false);
   const [newSectionTitle, setNewSectionTitle] = useState("");
 
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+const [touchStartX, setTouchStartX] = useState<number | null>(null);
 const [swipeOffset, setSwipeOffset] = useState(0);
 const [isSwiping, setIsSwiping] = useState(false);
+const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
+const [isAnimating, setIsAnimating] = useState(false);
+const [displayDate, setDisplayDate] = useState<Date>(() => {
+  const t = new Date();
+  t.setHours(0, 0, 0, 0);
+  return t;
+});
 
   const [weekEntries, setWeekEntries] = useState<
     { entry_date: string; pain_level: number | null; mood_level: number | null; meta?: any; }[]
@@ -548,30 +555,37 @@ const todayIndexInWeek = useMemo(() => {
 
   return (
     <main
- onTouchStart={(e) => {
+onTouchStart={(e) => {
+  if (isAnimating) return;
   setTouchStartX(e.touches[0].clientX);
   setIsSwiping(true);
   setSwipeOffset(0);
 }}
 onTouchMove={(e) => {
-  if (touchStartX === null) return;
+  if (touchStartX === null || isAnimating) return;
   const diff = e.touches[0].clientX - touchStartX;
   setSwipeOffset(diff);
 }}
 onTouchEnd={(e) => {
-  if (touchStartX === null) return;
+  if (touchStartX === null || isAnimating) return;
   const diff = touchStartX - e.changedTouches[0].clientX;
   setIsSwiping(false);
   setSwipeOffset(0);
-  if (Math.abs(diff) < 50) {
-    setTouchStartX(null);
-    return;
-  }
+  setTouchStartX(null);
+  if (Math.abs(diff) < 50) return;
+  const direction = diff > 0 ? "left" : "right";
   const newDate = new Date(selectedDate);
   newDate.setDate(selectedDate.getDate() + (diff > 0 ? 1 : -1));
   newDate.setHours(0, 0, 0, 0);
-  if (newDate <= today) setSelectedDate(newDate);
-  setTouchStartX(null);
+  if (newDate > today) return;
+  setSlideDirection(direction);
+  setIsAnimating(true);
+  setTimeout(() => {
+    setSelectedDate(newDate);
+    setDisplayDate(newDate);
+    setSlideDirection(null);
+    setIsAnimating(false);
+  }, 300);
 }}
 >
       {/* Header */}
@@ -815,15 +829,24 @@ onTouchEnd={(e) => {
       <div className="h-px bg-[#13344A]/25" />
 
       {/* Cards stack */}
-     {/* Cards stack */}
-<section className="px-5 py-6 pb-13 overflow-hidden">
+{/* Cards stack */}
+<section className="px-5 py-6 pb-13 overflow-hidden relative">
   <div
     className="rounded-2xl border border-[#13344A]/20 bg-[#F6EFE6] shadow-sm overflow-hidden"
     style={{
-      transform: isSwiping ? `translateX(${swipeOffset * 0.3}px)` : "translateX(0)",
-      transition: isSwiping ? "none" : "transform 0.3s ease",
-      opacity: isSwiping ? 1 - Math.abs(swipeOffset) / 600 : 1,
+      transform: isSwiping
+        ? `translateX(${swipeOffset * 0.4}px)`
+        : slideDirection === "left"
+        ? "translateX(-100%)"
+        : slideDirection === "right"
+        ? "translateX(100%)"
+        : "translateX(0)",
+      transition: isSwiping ? "none" : "transform 0.3s ease, opacity 0.3s ease",
+      opacity: isSwiping
+        ? 1 - Math.abs(swipeOffset) / 400
+        : isAnimating ? 0 : 1,
     }}
+  >
   >
           <CardRow
            title="Douleurs"
