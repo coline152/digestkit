@@ -847,7 +847,7 @@ onTouchEnd={(e) => {
         : isAnimating ? 0 : 1,
     }}
   >
-  >
+  
           <CardRow
            title="Douleurs"
            color="#E0949F"
